@@ -8,9 +8,10 @@ echo "关注我的推特获取更多更新: https://x.com/BtcK241918"
 show_menu() {
     echo "请选择一个操作:"
     echo "1) 安装必要依赖并安装 Nesa 矿工节点"
-    echo "2) 卸载 Nesa 矿工节点"
+    echo "2) 卸载 Nesa 知节点"
     echo "3) 查看日志"
-    echo "4) 退出"
+    echo "4) 查看 Nesa 节点 ID"
+    echo "5) 退出"
 }
 
 # 安装必要依赖并安装 Nesa 矿工节点的函数
@@ -56,6 +57,16 @@ view_logs() {
     fi
 }
 
+# 查看 Nesa 节点 ID 的函数
+view_node_id() {
+    echo "查看 Nesa 节点 ID..."
+    if [ -f ~/.nesa/identity/node_id.id ]; then
+        cat ~/.nesa/identity/node_id.id
+    else
+        echo "节点 ID 文件不存在！"
+    fi
+}
+
 # 主循环
 while true; do
     show_menu
@@ -74,6 +85,10 @@ while true; do
             read -p "按回车返回主菜单..."
             ;;
         4)
+            view_node_id
+            read -p "按回车返回主菜单..."
+            ;;
+        5)
             echo "退出脚本。"
             exit 0
             ;;
