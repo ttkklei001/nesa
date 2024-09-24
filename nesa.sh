@@ -8,7 +8,7 @@ echo "关注我的推特获取更多更新: https://x.com/BtcK241918"
 show_menu() {
     echo "请选择一个操作:"
     echo "1) 安装必要依赖并安装 Nesa 矿工节点"
-    echo "2) 卸载 Nesa 知节点"
+    echo "2) 卸载 Nesa 矿工节点"
     echo "3) 查看日志"
     echo "4) 查看 Nesa 节点 ID"
     echo "5) 退出"
@@ -17,13 +17,22 @@ show_menu() {
 # 安装必要依赖并安装 Nesa 矿工节点的函数
 install_nesa() {
     echo "正在安装必要的依赖..."
-    sudo apt update && sudo apt install curl jq python3 python3-pip -y
+    sudo apt update && sudo apt install curl jq python3 -y
     
+    # 安装 pip3
+    if ! command -v pip3 &> /dev/null; then
+        echo "未检测到 pip3，正在安装..."
+        sudo apt install python3-pip -y
+    fi
+
     # 安装 ecdsa 模块
     echo "检查并安装 ecdsa 模块..."
     if ! python3 -c "import ecdsa" &> /dev/null; then
         echo "未安装 ecdsa，正在安装..."
-        pip3 install ecdsa
+        pip3 install ecdsa || {
+            echo "安装 ecdsa 模块失败，请手动安装。"
+            return
+        }
         echo "ecdsa 模块安装完成！"
     else
         echo "ecdsa 模块已安装，跳过安装步骤。"
@@ -49,7 +58,6 @@ uninstall_nesa() {
 # 查看日志的函数
 view_logs() {
     echo "查看 Nesa 矿工节点日志..."
-    # 假设日志文件路径为 /var/log/nesa.log
     if [ -f /var/log/nesa.log ]; then
         cat /var/log/nesa.log
     else
