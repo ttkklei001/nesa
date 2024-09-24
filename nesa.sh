@@ -16,13 +16,7 @@ show_menu() {
 # 安装必要依赖并安装 Nesa 矿工节点的函数
 install_nesa() {
     echo "正在安装必要的依赖..."
-    sudo apt update && sudo apt install curl jq -y
-    
-    # 安装 Python 和 pip
-    if ! command -v python3 &> /dev/null; then
-        echo "未检测到 Python3，正在安装..."
-        sudo apt install python3 python3-pip -y
-    fi
+    sudo apt update && sudo apt install curl jq python3 python3-pip -y
     
     # 安装 ecdsa 模块
     echo "检查并安装 ecdsa 模块..."
@@ -36,14 +30,18 @@ install_nesa() {
 
     # 安装 Nesa 矿工节点
     echo "正在安装 Nesa 矿工节点..."
-    bash <(curl -s https://raw.githubusercontent.com/nesaorg/bootstrap/master/bootstrap.sh)
+    bash <(curl -s https://raw.githubusercontent.com/nesaorg/bootstrap/master/bootstrap.sh) || {
+        echo "Nesa 矿工节点安装失败！"
+        return
+    }
     echo "Nesa 矿工节点安装完成！"
 }
 
 # 卸载 Nesa 矿工节点的函数
 uninstall_nesa() {
     echo "正在卸载 Nesa 矿工节点..."
-    # 在这里添加卸载命令
+    # 添加具体的卸载命令
+    # 示例：sudo systemctl stop nesa && sudo apt remove nesa -y
     echo "Nesa 矿工节点卸载完成！"
 }
 
@@ -65,12 +63,15 @@ while true; do
     case $choice in
         1)
             install_nesa
+            read -p "按回车返回主菜单..."
             ;;
         2)
             uninstall_nesa
+            read -p "按回车返回主菜单..."
             ;;
         3)
             view_logs
+            read -p "按回车返回主菜单..."
             ;;
         4)
             echo "退出脚本。"
