@@ -9,7 +9,8 @@ show_menu() {
     echo "请选择一个操作:"
     echo "1) 安装必要依赖并安装 Nesa 矿工节点"
     echo "2) 卸载 Nesa 矿工节点"
-    echo "3) 退出"
+    echo "3) 查看日志"
+    echo "4) 退出"
 }
 
 # 安装必要依赖并安装 Nesa 矿工节点的函数
@@ -46,6 +47,17 @@ uninstall_nesa() {
     echo "Nesa 矿工节点卸载完成！"
 }
 
+# 查看日志的函数
+view_logs() {
+    echo "查看 Nesa 矿工节点日志..."
+    # 假设日志文件路径为 /var/log/nesa.log
+    if [ -f /var/log/nesa.log ]; then
+        cat /var/log/nesa.log
+    else
+        echo "日志文件不存在！"
+    fi
+}
+
 # 主循环
 while true; do
     show_menu
@@ -58,6 +70,9 @@ while true; do
             uninstall_nesa
             ;;
         3)
+            view_logs
+            ;;
+        4)
             echo "退出脚本。"
             exit 0
             ;;
